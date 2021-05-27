@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">randomizer</string>
+    <string name="result">Previous result: %d</string>
 </resources>

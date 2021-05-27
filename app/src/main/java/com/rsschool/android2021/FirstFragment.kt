@@ -1,5 +1,6 @@
 package com.rsschool.android2021
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 class FirstFragment : Fragment() {
@@ -15,7 +17,7 @@ class FirstFragment : Fragment() {
     private var previousResult: TextView? = null
     private var minVal: EditText? = null
     private var maxVal: EditText? = null
-    private lateinit var sender: Sender
+    private var sender:Sender? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +25,15 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_first, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if(context is Sender){
+            sender = context
+        }
+        else
+            throw RuntimeException(context.toString() + "must implement Sender")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,22 +44,35 @@ class FirstFragment : Fragment() {
         maxVal = view.findViewById(R.id.max_value)
 
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
-        previousResult?.text = "Previous result: ${result.toString()}"
-
-        // TODO: val min = ...
-        var min = minVal?.text.toString().toInt()
-        // TODO: val max = ...
-        var max = maxVal?.text.toString().toInt()
+        previousResult?.text = getString(R.string.result,result)
 
         generateButton?.setOnClickListener {
-            // TODO: send min and max to the SecondFragment
-            //activity?.sendValues(min,max) as MainActivity
-            sender.sendValues(min,max)
+            try {
+                val min = minVal?.text.toString().toInt()
+                val max = maxVal?.text.toString().toInt()
+                if(checkValues(min,max))
+                    sender?.sendValues(min,max)
+            }catch (e:NumberFormatException){
+                Toast.makeText(context,"Please, enter min and max values", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 
-    public fun setSender(x: Sender){
-        sender = x
+    private fun checkValues(min: Int,max: Int):Boolean{
+        return when {
+            min == max -> {
+                Toast.makeText(context, "Min and max values can't be the same", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+            max < min -> {
+                Toast.makeText(context, "Min value can't be larger than max", Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+            else -> true
+        }
     }
 
     interface Sender {
