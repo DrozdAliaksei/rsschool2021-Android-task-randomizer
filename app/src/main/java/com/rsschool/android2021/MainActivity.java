@@ -1,6 +1,7 @@
 package com.rsschool.android2021;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,18 @@ public class MainActivity extends AppCompatActivity implements FirstFragment.Sen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         openFirstFragment(0);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        if(currentFragment instanceof SecondFragment){
+            TextView result = findViewById(R.id.result);
+            int previousNumber = Integer.parseInt(result.getText().toString());
+            openFirstFragment(previousNumber);
+        }
+        else
+            super.onBackPressed();
     }
 
     private void openFirstFragment(int previousNumber) {

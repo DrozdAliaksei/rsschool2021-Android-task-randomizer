@@ -44,7 +44,6 @@ class SecondFragment : Fragment() {
 
         backButton?.setOnClickListener {
             receiver?.receiveValues(result?.text.toString().toInt())
-
         }
     }
 
