@@ -26,7 +26,7 @@ class SecondFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is ResultReceiver)
+        if (context is ResultReceiver)
             receiver = context
         else
             throw RuntimeException(context.toString() + "must implement ResultReceiver")
@@ -48,7 +48,7 @@ class SecondFragment : Fragment() {
     }
 
     private fun generate(min: Int, max: Int): Int {
-        return nextInt(min,max)
+        return nextInt(min, max)
     }
 
     interface ResultReceiver {
@@ -61,8 +61,8 @@ class SecondFragment : Fragment() {
         fun newInstance(min: Int, max: Int): SecondFragment {
             val fragment = SecondFragment()
             val args = Bundle()
-            args.putInt(MIN_VALUE_KEY,min)
-            args.putInt(MAX_VALUE_KEY,max)
+            args.putInt(MIN_VALUE_KEY, min)
+            args.putInt(MAX_VALUE_KEY, max)
             fragment.arguments = args
             return fragment
         }

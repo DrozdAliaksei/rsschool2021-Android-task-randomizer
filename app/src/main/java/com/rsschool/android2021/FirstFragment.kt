@@ -17,7 +17,7 @@ class FirstFragment : Fragment() {
     private var previousResult: TextView? = null
     private var minVal: EditText? = null
     private var maxVal: EditText? = null
-    private var sender:Sender? = null
+    private var sender: Sender? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,10 +29,9 @@ class FirstFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is Sender){
+        if (context is Sender) {
             sender = context
-        }
-        else
+        } else
             throw RuntimeException(context.toString() + "must implement Sender")
     }
 
@@ -44,22 +43,21 @@ class FirstFragment : Fragment() {
         maxVal = view.findViewById(R.id.max_value)
 
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
-        previousResult?.text = getString(R.string.result,result)
+        previousResult?.text = getString(R.string.result, result)
 
         generateButton?.setOnClickListener {
             try {
                 val min = minVal?.text.toString().toInt()
                 val max = maxVal?.text.toString().toInt()
-                if(checkValues(min,max))
-                    sender?.sendValues(min,max)
-            }catch (e:NumberFormatException){
-                Toast.makeText(context,"Please, enter min and max values", Toast.LENGTH_LONG).show()
+                if (checkValues(min, max))
+                    sender?.sendValues(min, max)
+            } catch (e: NumberFormatException) {
+                Toast.makeText(context, "Please, enter correct values", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 
-    private fun checkValues(min: Int,max: Int):Boolean{
+    private fun checkValues(min: Int, max: Int): Boolean {
         return when {
             min == max -> {
                 Toast.makeText(context, "Min and max values can't be the same", Toast.LENGTH_SHORT)
@@ -76,7 +74,7 @@ class FirstFragment : Fragment() {
     }
 
     interface Sender {
-        fun sendValues(min: Int,max: Int)
+        fun sendValues(min: Int, max: Int)
     }
 
     companion object {
