@@ -48,7 +48,7 @@ class SecondFragment : Fragment() {
     }
 
     private fun generate(min: Int, max: Int): Int {
-        return nextInt(min, max)
+        return nextInt(min, max + 1)
     }
 
     interface ResultReceiver {
